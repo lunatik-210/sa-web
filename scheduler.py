@@ -60,6 +60,7 @@ def db_execute(handler, request):
 
 if __name__ == '__main__':
 	import MySQLdb as mysql
+	import time
 	from datetime import datetime
 
 	db = mysql.connect(host='localhost', user='saweb', passwd='passSaWeb')
@@ -72,8 +73,8 @@ if __name__ == '__main__':
 
 		results = db_execute(handler, 'SELECT requests.id, requests.user_id, requests.source_path FROM requests LIMIT 0,1')
 		if len(results) == 0:
-			# have to sleep(1000) really
-			break
+			time.sleep(1)
+			continue
 		id, user_id, source_path = results[0]
 
 		res_path = make_call_graph(source_path, str(id), 'svg')
@@ -91,6 +92,7 @@ if __name__ == '__main__':
 		db.commit()
 
 		#just for testing
+		#break should be commented in final
 		break
 
 	db.close()
