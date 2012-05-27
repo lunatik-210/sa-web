@@ -20,22 +20,30 @@ def make_call_graph(filename):
 	output = execute([dot, '-Tpng', '-o', 'out.png'], output)
 
 def send_email(to, file):
-	import smtplib
-	from email.mime.image import MIMEImage
-	from email.mime.multipart import MIMEMultipart
-	
+	import smtplib, os
+	from email.MIMEMultipart import MIMEMultipart
+	from email.MIMEBase import MIMEBase
+	from email.MIMEText import MIMEText
+	from email.Utils import COMMASPACE, formatdate
+	from email import Encoders
+
+	COMMASPACE = ', '
+
 	msg = MIMEMultipart()
 	msg['Subject'] = 'Your task is processed'
 	msg['From'] = 'poddy.org'
-	msg['To'] = to
+	msg['To'] = COMMASPACE.join(to)
 
-	fp = open(file, 'rb')
-	img = MIMEImage(fp.read())
-	fp.close()
-	msg.attach(img)
+	msg.attach( MIMEText("Look in attachements") )
+
+    part = MIMEBase('application', "octet-stream")
+    part.set_payload( open(file,"rb").read() )
+    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f))
+    msg.attach(part)
 
 	s = smtplib.SMTP('localhost')
-	s.sendmail('noreply@sourceanalyzer.org', [to], msg.as_string())
+	s.sendmail('poddy@poddy.org', [to], msg.as_string())
 	s.quit()
 
 
@@ -50,6 +58,7 @@ if __name__ == '__main__':
 		handler.execute('SELECT * FROM requests LIMIT 0,1')
 		results = handler.fetchall()
 		if len(results) == 0:
+			# have to sleep(1000) really
 			break
 		make_call_graph(results[0][2])
 		handler.execute('DELETE FROM requests WHERE id = %s' % results[0][0])
