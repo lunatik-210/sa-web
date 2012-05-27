@@ -17,7 +17,7 @@ def make_call_graph(filename):
 
 	output = execute(sacparse, stream)
 	output = execute(sacg2dot, output)
-	output = execute([dot, '-Tpng', '-o', 'out.png'], output)
+	output = execute([dot, '-Tsvg', '-o', 'out.svg'], output)
 
 def send_email(to, file):
 	import smtplib, os
@@ -26,8 +26,6 @@ def send_email(to, file):
 	from email.MIMEText import MIMEText
 	from email.Utils import COMMASPACE, formatdate
 	from email import Encoders
-
-	COMMASPACE = ', '
 
 	msg = MIMEMultipart()
 	msg['Subject'] = 'Your task is processed'
@@ -64,7 +62,7 @@ if __name__ == '__main__':
 		handler.execute('DELETE FROM requests WHERE id = %s' % results[0][0])
 		db.commit()
 
-		send_email('andrew.d.lapin@gmail.com', 'out.png')
+		send_email('andrew.d.lapin@gmail.com', 'out.svg')
 
 		#just for testing
 		break
