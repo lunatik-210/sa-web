@@ -1,5 +1,6 @@
 
 bin_path = './bin'
+output_path = './'
 sacparse = bin_path + '/sacparse'
 sacg2dot = bin_path + '/sacg2dot'
 dot      = 'dot'
@@ -10,14 +11,17 @@ def execute(file, input):
 	p = Popen(file, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 	return p.communicate(input=input)[0]
 
-def make_call_graph(filename):
+def make_call_graph(filename, resname, format):
 	f = open(filename, 'r')
 	stream = f.read()
 	f.close()
 
+	res_path = output_path + resname + '.' + format
+
 	output = execute(sacparse, stream)
 	output = execute(sacg2dot, output)
-	output = execute([dot, '-Tsvg', '-o', 'out.svg'], output)
+	output = execute([dot, '-T%s' % format, '-o', res_path], output)
+	return res_path
 
 def send_email(to, name, file):
 	import smtplib, os
@@ -72,7 +76,7 @@ if __name__ == '__main__':
 			break
 		id, user_id, source_path = results[0]
 
-		make_call_graph(source_path)
+		res_path = make_call_graph(source_path, str(id), 'svg')
 		
 		handler.execute('DELETE FROM requests WHERE id = %s' % id)
 		db.commit()
@@ -80,10 +84,10 @@ if __name__ == '__main__':
 		results = db_execute(handler, 'SELECT users.email, users.name FROM users where users.id = %s' % user_id)
 		if len(results) != 0:
 			email, name = results[0]
-			send_email(email, name, 'out.svg')
+			send_email(email, name, res_path)
 			resolution = 'Wrong'
 
-		handler.execute("INSERT into history (user_id, graph_path, resolution, request_id) VALUES(%s, '%s', '%s', %s)"  % (user_id, './', resolution, id))
+		handler.execute("INSERT into history (user_id, graph_path, resolution, request_id) VALUES(%s, '%s', '%s', %s)"  % (user_id, res_path, resolution, id))
 		db.commit()
 
 		#just for testing
