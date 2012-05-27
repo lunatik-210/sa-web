@@ -20,7 +20,7 @@ def make_call_graph(filename):
 	output = execute([dot, '-Tsvg', '-o', 'out.svg'], output)
 
 if __name__ == '__main__':
-	db = mysql.connect(host='localhost', user='root', passwd='rfkmrekznjh')
+	db = mysql.connect(host='localhost', user='saweb', passwd='passSaWeb')
 	handler = db.cursor()
 	handler.execute('use sa')
 
@@ -29,8 +29,7 @@ if __name__ == '__main__':
 		results = handler.fetchall()
 		if len(results) == 0:
 			break
-		make_call_graph(results[0][3])
-		print results[0][0]
+		make_call_graph(results[0][2])
 		handler.execute('DELETE FROM queue WHERE id = %s' % results[0][0])
 		db.commit()
 		break
