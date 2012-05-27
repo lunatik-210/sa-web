@@ -36,7 +36,11 @@ def send_email(to, name, file):
 	msg.attach( MIMEText("See in attachment.") )
 
 	part = MIMEBase('application', "octet-stream")
-	part.set_payload( open(file,"rb").read() )
+	
+	f = open(file,"rb").read()
+	part.set_payload( f.read() )
+	f.close()
+
 	Encoders.encode_base64(part)
 	part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(file))
 	msg.attach(part)
