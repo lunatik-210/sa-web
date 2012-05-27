@@ -30,7 +30,7 @@ def send_email(to, file):
 	msg = MIMEMultipart()
 	msg['Subject'] = 'Your task is processed'
 	msg['From'] = 'poddy.org'
-	msg['To'] = to
+	msg['To'] = [to]
 
 	msg.attach( MIMEText("Look in attachements") )
 
