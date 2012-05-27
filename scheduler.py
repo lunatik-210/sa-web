@@ -46,29 +46,31 @@ def send_email(to, name, file):
 	s.quit()
 
 
+def db_execute(handler, request):
+	handler.execute(request)
+	return handler.fetchall()
+
 if __name__ == '__main__':
 	import MySQLdb as mysql
 
 	db = mysql.connect(host='localhost', user='saweb', passwd='passSaWeb')
 	handler = db.cursor()
-	handler.execute('use saweb')
+
+	db_execute(handler, 'use saweb')
 
 	while True:
-		handler.execute('SELECT requests.id, requests.user_id, requests.source_path FROM requests LIMIT 0,1')
-		results = handler.fetchall()
-
+		results = db_execute(handler, 'SELECT requests.id, requests.user_id, requests.source_path FROM requests LIMIT 0,1')
 		if len(results) == 0:
 			# have to sleep(1000) really
 			break
-
 		id, user_id, source_path = results[0]
+
 		make_call_graph(source_path)
+		
 		handler.execute('DELETE FROM requests WHERE id = %s' % id)
 		db.commit()
 
-		handler.execute('SELECT users.email, users.name FROM users where users.id = %s' % user_id)
-		results = handler.fetchall()
-
+		results = db_execute(handler, 'SELECT users.email, users.name FROM users where users.id = %s' % user_id)
 		if len(results) != 0:
 			email, name = results[0]
 			send_email(email, name, 'out.svg')
