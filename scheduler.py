@@ -39,7 +39,7 @@ def send_email(to, file):
 	part = MIMEBase('application', "octet-stream")
 	part.set_payload( open(file,"rb").read() )
 	Encoders.encode_base64(part)
-	part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f))
+	part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(file))
 	msg.attach(part)
 
 	s = smtplib.SMTP('localhost')
