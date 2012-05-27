@@ -64,6 +64,8 @@ if __name__ == '__main__':
 	db_execute(handler, 'use saweb')
 
 	while True:
+		resolution = 'Done'
+
 		results = db_execute(handler, 'SELECT requests.id, requests.user_id, requests.source_path FROM requests LIMIT 0,1')
 		if len(results) == 0:
 			# have to sleep(1000) really
@@ -79,8 +81,9 @@ if __name__ == '__main__':
 		if len(results) != 0:
 			email, name = results[0]
 			send_email(email, name, 'out.svg')
+			resolution = 'Wrong'
 
-		handler.execute("INSERT into history (user_id, graph_path, resolution, request_id) VALUES(%s, '%s', '%s', %s)"  % (user_id, './', 'done', id))
+		handler.execute("INSERT into history (user_id, graph_path, resolution, request_id) VALUES(%s, '%s', '%s', %s)"  % (user_id, './', resolution, id))
 		db.commit()
 
 		#just for testing
