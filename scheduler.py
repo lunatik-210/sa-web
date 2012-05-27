@@ -36,11 +36,11 @@ def send_email(to, file):
 
 	msg.attach( MIMEText("Look in attachements") )
 
-    part = MIMEBase('application', "octet-stream")
-    part.set_payload( open(file,"rb").read() )
-    Encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f))
-    msg.attach(part)
+	part = MIMEBase('application', "octet-stream")
+	part.set_payload( open(file,"rb").read() )
+	Encoders.encode_base64(part)
+	part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f))
+	msg.attach(part)
 
 	s = smtplib.SMTP('localhost')
 	s.sendmail('poddy@poddy.org', [to], msg.as_string())
