@@ -54,7 +54,7 @@ if __name__ == '__main__':
 	handler.execute('use saweb')
 
 	while True:
-		handler.execute('SELECT * FROM requests LIMIT 0,1')
+		handler.execute('SELECT requests.id, requests.user_id, requests.source_path FROM requests LIMIT 0,1')
 		results = handler.fetchall()
 
 		if len(results) == 0:
