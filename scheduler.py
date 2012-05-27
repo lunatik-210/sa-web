@@ -1,6 +1,6 @@
 
 bin_path = './bin'
-output_path = './'
+output_path = './output/'
 sacparse = bin_path + '/sacparse'
 sacg2dot = bin_path + '/sacg2dot'
 dot      = 'dot'
