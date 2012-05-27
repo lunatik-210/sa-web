@@ -28,11 +28,11 @@ def send_email(to, file):
 	msg['Subject'] = 'Your task is processed'
 	msg['From'] = 'poddy.org'
 	msg['To'] = to
-    
-    fp = open(file, 'rb')
-    img = MIMEImage(fp.read())
-    fp.close()
-    msg.attach(img)
+
+	fp = open(file, 'rb')
+	img = MIMEImage(fp.read())
+	fp.close()
+	msg.attach(img)
 
 	s = smtplib.SMTP('localhost')
 	s.sendmail('noreply@sourceanalyzer.org', [to], msg.as_string())
