@@ -17,7 +17,7 @@ def make_call_graph(filename):
 
 	output = execute(sacparse, stream)
 	output = execute(sacg2dot, output)
-	output = execute([dot, '-Tsvg', '-o', 'out.svg'], output)
+	output = execute([dot, '-Tpng', '-o', 'out.png'], output)
 
 def send_email(to, file):
 	import smtplib
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 		handler.execute('DELETE FROM requests WHERE id = %s' % results[0][0])
 		db.commit()
 
-		send_email('andrew.d.lapin@gmail.com', 'out.svg')
+		send_email('andrew.d.lapin@gmail.com', 'out.png')
 
 		#just for testing
 		break
