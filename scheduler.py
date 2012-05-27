@@ -22,7 +22,7 @@ def make_call_graph(filename):
 if __name__ == '__main__':
 	db = mysql.connect(host='localhost', user='saweb', passwd='passSaWeb')
 	handler = db.cursor()
-	handler.execute('use sa')
+	handler.execute('use saweb')
 
 	while True:
 		handler.execute('SELECT * FROM queue LIMIT 0,1')
@@ -33,5 +33,6 @@ if __name__ == '__main__':
 		handler.execute('DELETE FROM queue WHERE id = %s' % results[0][0])
 		db.commit()
 		break
+
 
 	db.close()
