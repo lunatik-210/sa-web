@@ -19,14 +19,20 @@ def make_call_graph(filename):
 	output = execute(sacg2dot, output)
 	output = execute([dot, '-Tsvg', '-o', 'out.svg'], output)
 
-def send_email(to, msg, file):
+def send_email(to, file):
 	import smtplib
-	from email.mime.text import MIMEText
+	from email.mime.image import MIMEImage
+	from email.mime.multipart import MIMEMultipart
 	
-	msg = MIMEText(msg)
+	msg = MIMEMultipart()
 	msg['Subject'] = 'Your task is processed'
 	msg['From'] = 'poddy.org'
 	msg['To'] = to
+    
+    fp = open(file, 'rb')
+    img = MIMEImage(fp.read())
+    fp.close()
+    msg.attach(img)
 
 	s = smtplib.SMTP('localhost')
 	s.sendmail('noreply@sourceanalyzer.org', [to], msg.as_string())
@@ -49,7 +55,7 @@ if __name__ == '__main__':
 		handler.execute('DELETE FROM requests WHERE id = %s' % results[0][0])
 		db.commit()
 
-		send_email('andrew.d.lapin@gmail.com', 'task is done', 'asd')
+		send_email('andrew.d.lapin@gmail.com', 'out.svg')
 
 		#just for testing
 		break
