@@ -19,7 +19,7 @@ def make_call_graph(filename):
 	output = execute(sacg2dot, output)
 	output = execute([dot, '-Tsvg', '-o', 'out.svg'], output)
 
-def send_email(to, file):
+def send_email(to, name, file):
 	import smtplib, os
 	from email.MIMEMultipart import MIMEMultipart
 	from email.MIMEBase import MIMEBase
@@ -32,7 +32,8 @@ def send_email(to, file):
 	msg['From'] = 'poddy.org'
 	msg['To'] = to
 
-	msg.attach( MIMEText("Look in attachements") )
+	msg.attach( MIMEText("Dear %s, thank you for using SourceAnalyzer Web!" % s) )
+	msg.attach( MIMEText("See in attachment.") )
 
 	part = MIMEBase('application', "octet-stream")
 	part.set_payload( open(file,"rb").read() )
@@ -55,14 +56,22 @@ if __name__ == '__main__':
 	while True:
 		handler.execute('SELECT * FROM requests LIMIT 0,1')
 		results = handler.fetchall()
+
 		if len(results) == 0:
 			# have to sleep(1000) really
 			break
-		make_call_graph(results[0][2])
-		handler.execute('DELETE FROM requests WHERE id = %s' % results[0][0])
+
+		id, user_id, source_path = results[0]
+		make_call_graph(source_path)
+		handler.execute('DELETE FROM requests WHERE id = %s' % id)
 		db.commit()
 
-		send_email('andrew.d.lapin@gmail.com', 'out.svg')
+		handler.execute('SELECT users.email, users.name FROM users where users.id = %s' % user_id)
+		results = handler.fetchall()
+
+		if len(results) != 0:
+			email, name = results[0]
+			send_email(email, name, 'out.svg')
 
 		#just for testing
 		break
