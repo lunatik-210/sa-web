@@ -79,8 +79,8 @@ if __name__ == '__main__':
 			email, name = results[0]
 			send_email(email, name, 'out.svg')
 
-		print (user_id, './', 'done', id, date_st)
-		handler.execute('INSERT into history (user_id, graph_path, resolution, request_id, date_st) VALUES(%s, %s, %s, %s, %s) '  % (user_id, './', 'done', id, date_st) )
+		print 'INSERT into history (user_id, graph_path, resolution, request_id, date_st) VALUES(%s, %s, %s, %s, %s) '  % (user_id, './', 'done', id, date_st)
+		handler.execute('INSERT into history (user_id, graph_path, resolution, request_id, date_st) VALUES(%s, %s, %s, %s, %s)'  % (user_id, './', 'done', id, date_st) )
 		db.commit()
 
 		#just for testing
