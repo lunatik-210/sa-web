@@ -32,7 +32,7 @@ def send_email(to, name, file):
 	msg['From'] = 'poddy.org'
 	msg['To'] = to
 
-	msg.attach( MIMEText("Dear %s, thank you for using SourceAnalyzer Web!" % s) )
+	msg.attach( MIMEText("Dear %s, thank you for using SourceAnalyzer Web!" % name) )
 	msg.attach( MIMEText("See in attachment.") )
 
 	part = MIMEBase('application', "octet-stream")
