@@ -61,7 +61,6 @@ def db_execute(handler, request):
 if __name__ == '__main__':
 	import MySQLdb as mysql
 	import time
-	from datetime import datetime
 
 	db = mysql.connect(host='localhost', user='saweb', passwd='passSaWeb')
 	handler = db.cursor()
