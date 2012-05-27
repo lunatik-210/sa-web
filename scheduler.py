@@ -25,14 +25,15 @@ if __name__ == '__main__':
 	handler.execute('use saweb')
 
 	while True:
-		handler.execute('SELECT * FROM queue LIMIT 0,1')
+		handler.execute('SELECT * FROM requests LIMIT 0,1')
 		results = handler.fetchall()
 		if len(results) == 0:
 			break
 		make_call_graph(results[0][2])
-		handler.execute('DELETE FROM queue WHERE id = %s' % results[0][0])
+		handler.execute('DELETE FROM requests WHERE id = %s' % results[0][0])
 		db.commit()
-		break
 
+		#just for testing
+		break
 
 	db.close()
