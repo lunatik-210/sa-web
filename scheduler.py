@@ -85,7 +85,7 @@ if __name__ == '__main__':
 		if len(results) != 0:
 			email, name = results[0]
 			send_email(email, name, res_path)
-			resolution = 'Wrong'
+		else: resolution = 'Wrong'
 
 		handler.execute("INSERT into history (user_id, graph_path, resolution, request_id) VALUES(%s, '%s', '%s', %s)"  % (user_id, res_path, resolution, id))
 		db.commit()
