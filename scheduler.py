@@ -37,7 +37,7 @@ def send_email(to, name, file):
 
 	part = MIMEBase('application', "octet-stream")
 	
-	f = open(file,"rb").read()
+	f = open(file,"rb")
 	part.set_payload( f.read() )
 	f.close()
 
