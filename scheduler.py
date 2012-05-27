@@ -81,9 +81,10 @@ if __name__ == '__main__':
 
 		print date_st
 		print date_st.date()
+		print datetime.fromtimestamp(date_st)
 
-		#handler.execute("INSERT into history (user_id, graph_path, resolution, request_id, date_st) VALUES(%s, '%s', '%s', %s, %s)"  % (user_id, './', 'done', id, date_st.date()) )
-		#db.commit()
+		handler.execute("INSERT into history (user_id, graph_path, resolution, request_id, date_st) VALUES(%s, '%s', '%s', %s, %s)"  % (user_id, './', 'done', id, datetime.fromtimestamp(date_st) ))
+		db.commit()
 
 		#just for testing
 		break
