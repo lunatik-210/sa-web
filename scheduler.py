@@ -1,5 +1,3 @@
-from subprocess import Popen, PIPE, STDOUT
-import MySQLdb as mysql
 
 bin_path = './bin'
 sacparse = bin_path + '/sacparse'
@@ -7,6 +5,8 @@ sacg2dot = bin_path + '/sacg2dot'
 dot      = 'dot'
 
 def execute(file, input):
+	from subprocess import Popen, PIPE, STDOUT
+	
 	p = Popen(file, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 	return p.communicate(input=input)[0]
 
@@ -20,6 +20,8 @@ def make_call_graph(filename):
 	output = execute([dot, '-Tsvg', '-o', 'out.svg'], output)
 
 if __name__ == '__main__':
+	import MySQLdb as mysql
+
 	db = mysql.connect(host='localhost', user='saweb', passwd='passSaWeb')
 	handler = db.cursor()
 	handler.execute('use saweb')
