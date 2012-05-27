@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset=utf-8 />
+	<title>SA Web</title>
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<script type="text/javascript" src=jquery-min.js></script>
+	<script type="text/javascript" src=index.js></script>
+</head>
+<body>
+	<div id="header">
+		SA Web
+	</div>
+<div id="stylized" class="sendform">
+	<form id="form" name="form" method="post" enctype="multipart/form-data" action="cgi-bin/sa.py">
+		<h1>SA Web</h1>
+		<p>Send your preprocessed code</p>
+
+		<label>Name
+			<span class="small">Add your name</span>
+		</label>
+		<input type="text" name="name" id="name" />
+
+		<label>Email
+			<span class="small">Add a valid address</span>
+		</label>
+		<input type="text" name="email" id="email" />
+
+		<label>File
+			<span class="small">Your source code</span>
+		</label>
+		<input type="file" name="datafile" size="31" />
+
+		<button  type="submit" id ="submitbutton">Send</button>
+
+		<div class="spacer"></div>
+	</form>
+</div>
+<div class="content">
+</div>
+</body>
+</html>
